@@ -22,12 +22,15 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
                                 # The default select value is for ALL sites
                                 # dcc.Dropdown(id='site-dropdown',...)
                                 dcc.Dropdown(id='site-dropdown', 
-                                            options=[{'label':'All Sites','value':'ALL'}, 
-                                                {'label':'CCAFS LC-40','value':'CCAFS LC-40'},
-                                                {'label':'CCAFS SLC-40','value':'CCAFS SLC-40'},
-                                                {'label':'KSC LC-39A','value':'KSC LC-39A'},
-                                                {'label':'VAFB SLC-4E','value':'VAFB SLC-4E'}],
-                                                placeholder="Select a Launch Site here",
+                                            options=[
+                                                {'label':'All','value':'ALL'}, 
+                                                {'label':'CCAFS LC-40','value':'CCAFS LC-40'},
+                                                {'label':'CCAFS SLC-40','value':'CCAFS SLC-40'},
+                                                {'label':'KSC LC-39A','value':'KSC LC-39A'},
+                                                {'label':'VAFB SLC-4E','value':'VAFB SLC-4E'}
+                                                ],
+                                                value='ALL',
+                                                placeholder='Select a Launch Site here',
                                                 searchable=True),
                                 html.Br(),
 
@@ -59,11 +62,11 @@ def pie(site):
         fig = px.pie(spacex_df, values= 'class', names='Launch Site', title='Success count for all launch site')
         return fig
     else:
-        df_site_filtered = spacex_df[spacex_df['Launch Site']== site]
-        filtered_df= spacex_df[spacex_df['Launch Site'] == site_dropdown]
+        
+        filtered_df= spacex_df[spacex_df['Launch Site'] == site]
         df1 = filtered_df.groupby(['Launch Site','class']).size().reset_index(name='class count')
-        fig = px.pie(df_site_final, values='class', names= 'Launch Site', title='Success count for'+ site)
-    return fig
+        fig1 = px.pie(df1, values='class count', names= 'class', title='Success count for'+ site)
+    return fig1
 
 # TASK 4:
 # Add a callback function for `site-dropdown` and `payload-slider` as inputs, `success-payload-scatter-chart` as output
